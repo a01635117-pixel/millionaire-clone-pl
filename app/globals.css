@@ -3,10 +3,129 @@
 :root {
   --background: #020818;
   --foreground: #ffffff;
+  --gold: #c8a415;
+  --gold-light: #f0c030;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-rajdhani), Arial, sans-serif;
+}
+
+/* ─── Keyframes ─── */
+
+@keyframes pulse-gold {
+  0%, 100% { box-shadow: 0 0 12px rgba(200, 164, 21, 0.5), inset 0 0 8px rgba(200, 164, 21, 0.1); }
+  50%       { box-shadow: 0 0 35px rgba(200, 164, 21, 0.9), inset 0 0 20px rgba(200, 164, 21, 0.2); }
+}
+
+@keyframes pulse-green {
+  0%, 100% { box-shadow: 0 0 12px rgba(34, 197, 94, 0.5); }
+  50%       { box-shadow: 0 0 35px rgba(34, 197, 94, 0.9); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  15%, 55% { transform: translateX(-6px); }
+  35%, 75% { transform: translateX(6px); }
+}
+
+@keyframes ladder-pulse {
+  0%, 100% { box-shadow: 0 0 6px rgba(200, 164, 21, 0.4); }
+  50%       { box-shadow: 0 0 18px rgba(200, 164, 21, 0.9); }
+}
+
+@keyframes title-glow {
+  0%, 100% { text-shadow: 0 0 20px rgba(200, 164, 21, 0.6), 0 0 40px rgba(200, 164, 21, 0.3); }
+  50%       { text-shadow: 0 0 30px rgba(200, 164, 21, 1),   0 0 60px rgba(200, 164, 21, 0.5); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ─── Utility classes ─── */
+
+.font-cinzel   { font-family: var(--font-cinzel), serif; }
+.font-rajdhani { font-family: var(--font-rajdhani), sans-serif; }
+
+.animate-pulse-gold  { animation: pulse-gold  1.4s ease-in-out infinite; }
+.animate-pulse-green { animation: pulse-green 1.4s ease-in-out infinite; }
+.animate-shake       { animation: shake       0.5s ease-in-out; }
+.animate-ladder      { animation: ladder-pulse 1.8s ease-in-out infinite; }
+.animate-title-glow  { animation: title-glow  2.5s ease-in-out infinite; }
+.animate-fade-in     { animation: fade-in 0.5s ease-out forwards; }
+.animate-scale-in    { animation: scale-in 0.35s ease-out forwards; }
+
+/* ─── Answer button gradient border trick ─── */
+
+.answer-border-idle {
+  background:
+    linear-gradient(to bottom, #0d1a6e, #101f82) padding-box,
+    linear-gradient(135deg, #c8a415 0%, #3a55b5 50%, #c8a415 100%) border-box;
+  border: 2px solid transparent;
+}
+
+.answer-border-idle:hover:not(:disabled) {
+  background:
+    linear-gradient(to bottom, #182890, #1e35a8) padding-box,
+    linear-gradient(135deg, #f0c030 0%, #5a80e0 50%, #f0c030 100%) border-box;
+  border: 2px solid transparent;
+}
+
+.answer-border-selected {
+  background:
+    linear-gradient(to bottom, #c8a415, #e0b820) padding-box,
+    linear-gradient(135deg, #fff4a0 0%, #c8a415 50%, #fff4a0 100%) border-box;
+  border: 2px solid transparent;
+  animation: pulse-gold 1.4s ease-in-out infinite;
+}
+
+.answer-border-correct {
+  background:
+    linear-gradient(to bottom, #166534, #15803d) padding-box,
+    linear-gradient(135deg, #86efac 0%, #22c55e 50%, #86efac 100%) border-box;
+  border: 2px solid transparent;
+  animation: pulse-green 1.4s ease-in-out infinite;
+}
+
+.answer-border-wrong-selected {
+  background:
+    linear-gradient(to bottom, #7f1d1d, #991b1b) padding-box,
+    linear-gradient(135deg, #fca5a5 0%, #ef4444 50%, #fca5a5 100%) border-box;
+  border: 2px solid transparent;
+  animation: shake 0.5s ease-in-out;
+}
+
+.answer-border-show-correct {
+  background:
+    linear-gradient(to bottom, #14532d, #166534) padding-box,
+    linear-gradient(135deg, #86efac 0%, #22c55e 50%, #86efac 100%) border-box;
+  border: 2px solid transparent;
+}
+
+/* ─── Radial stage spotlight ─── */
+
+.stage-bg {
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 10%, rgba(70, 20, 160, 0.55) 0%, transparent 65%),
+    radial-gradient(ellipse 100% 60% at 50% 50%, rgba(10, 20, 100, 0.6) 0%, transparent 75%),
+    radial-gradient(ellipse 60% 30% at 50% 100%, rgba(0, 5, 40, 0.8) 0%, transparent 60%),
+    #020818;
+}
+
+/* ─── Question glow halo ─── */
+
+.question-glow {
+  box-shadow:
+    0 0 40px rgba(30, 60, 180, 0.35),
+    0 0 80px rgba(20, 40, 120, 0.2),
+    inset 0 0 30px rgba(0, 10, 60, 0.5);
 }

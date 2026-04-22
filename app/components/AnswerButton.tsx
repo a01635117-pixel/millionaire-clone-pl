@@ -23,27 +23,60 @@ export default function AnswerButton({
 }: Props) {
   if (isEliminated) {
     return (
-      <div className="flex items-center gap-3 px-5 py-3 rounded-full border border-[#1e2a6e] bg-[#0a0a2e] opacity-30">
-        <span className="font-bold text-gray-500 w-5 shrink-0">{LABELS[index]}:</span>
-        <span className="text-gray-500 line-through">{text}</span>
+      <div
+        className="flex items-center w-full rounded-full overflow-hidden opacity-25"
+        style={{
+          background:
+            "linear-gradient(to bottom, #0a0a2e, #0d1040) padding-box, linear-gradient(135deg, #333 0%, #1e2a6e 100%) border-box",
+          border: "2px solid transparent",
+        }}
+      >
+        <div className="px-4 py-3 text-gray-600 font-bold text-base bg-[#080820] border-r border-gray-800/50 font-cinzel w-14 text-center shrink-0">
+          {LABELS[index]}:
+        </div>
+        <div className="flex-1 px-4 py-3 text-gray-600 line-through font-rajdhani">{text}</div>
       </div>
     );
   }
 
-  let bg = "bg-gradient-to-r from-[#0d1a6e] to-[#1a2d9e] border border-[#2a3db0] hover:from-[#1a2d9e] hover:to-[#2a3db0]";
+  let borderClass = "answer-border-idle";
+  let labelBg = "bg-gradient-to-b from-[#0a1560] to-[#081040]";
+  let labelColor = "text-yellow-400";
   let textColor = "text-white";
+  let cursor = "cursor-pointer";
+  let scaleClass = "";
 
-  if (answerState === "correct" && isCorrect) {
-    bg = "bg-gradient-to-r from-green-700 to-green-500 border border-green-400";
+  if (answerState === "selected" && isSelected) {
+    borderClass = "answer-border-selected";
+    labelBg = "bg-gradient-to-b from-[#8a6e00] to-[#6b5200]";
+    labelColor = "text-[#020818]";
+    textColor = "text-[#020818] font-bold";
+    cursor = "cursor-default";
+  } else if (answerState === "correct" && isCorrect) {
+    borderClass = "answer-border-correct";
+    labelBg = "bg-gradient-to-b from-[#14532d] to-[#0f3d20]";
+    labelColor = "text-green-200";
+    textColor = "text-white";
+    cursor = "cursor-default";
+    scaleClass = "scale-[1.02]";
   } else if (answerState === "wrong") {
     if (isSelected) {
-      bg = "bg-gradient-to-r from-red-800 to-red-600 border border-red-400";
+      borderClass = "answer-border-wrong-selected";
+      labelBg = "bg-gradient-to-b from-[#5a0000] to-[#420000]";
+      labelColor = "text-red-200";
+      textColor = "text-white";
+      cursor = "cursor-default";
     } else if (isCorrect) {
-      bg = "bg-gradient-to-r from-green-700 to-green-500 border border-green-400";
+      borderClass = "answer-border-show-correct";
+      labelBg = "bg-gradient-to-b from-[#14532d] to-[#0f3d20]";
+      labelColor = "text-green-200";
+      textColor = "text-white";
+      cursor = "cursor-default";
+    } else {
+      cursor = "cursor-default";
     }
-  } else if (answerState === "selected" && isSelected) {
-    bg = "bg-gradient-to-r from-[#c8a415] to-[#f0c030] border border-yellow-300";
-    textColor = "text-[#0a0a2e]";
+  } else if (answerState !== "idle") {
+    cursor = "cursor-default";
   }
 
   const clickable = answerState === "idle";
@@ -52,12 +85,18 @@ export default function AnswerButton({
     <button
       onClick={clickable ? onClick : undefined}
       disabled={!clickable}
-      className={`flex items-center gap-3 px-5 py-3 rounded-full border transition-all duration-200 text-left w-full ${bg} ${textColor} ${
-        clickable ? "cursor-pointer" : "cursor-default"
-      } font-semibold`}
+      className={`flex items-center w-full rounded-full overflow-hidden transition-all duration-300 ${borderClass} ${cursor} ${scaleClass} group`}
     >
-      <span className="font-bold w-5 shrink-0">{LABELS[index]}:</span>
-      <span>{text}</span>
+      <div
+        className={`px-4 py-3 font-bold text-base ${labelBg} ${labelColor} border-r border-white/10 font-cinzel w-14 text-center shrink-0 transition-colors duration-300`}
+      >
+        {LABELS[index]}:
+      </div>
+      <div
+        className={`flex-1 px-4 py-3 text-left font-rajdhani text-base font-semibold ${textColor} tracking-wide transition-colors duration-300`}
+      >
+        {text}
+      </div>
     </button>
   );
 }

@@ -9,75 +9,160 @@ import AudienceModal from "./components/AudienceModal";
 import PhoneModal from "./components/PhoneModal";
 import { MONEY_LADDER } from "./data/questions";
 
+/* ─── Shared gold button style ─── */
+const goldBtn = {
+  background: "linear-gradient(135deg, #c8a415 0%, #f0c030 50%, #c8a415 100%)",
+  boxShadow: "0 4px 0 #6b5200, 0 0 30px rgba(200,164,21,0.4)",
+  color: "#020818",
+} as const;
+
 export default function Home() {
   const { state, startGame, selectAnswer, advance, walkAway, endGame, useLifeline, dismissLifeline } = useGame();
-
   const { phase, questions, currentIndex, selectedAnswer, answerState, lifelinesUsed, eliminatedAnswers, lifeline } =
     state;
 
   useEffect(() => {
     if (answerState === "wrong") {
-      const t = setTimeout(() => endGame(), 1800);
+      const t = setTimeout(() => endGame(), 2000);
       return () => clearTimeout(t);
     }
   }, [answerState, endGame]);
 
+  /* ══════════════ INTRO ══════════════ */
   if (phase === "intro") {
     return (
-      <div className="min-h-screen bg-[#020818] flex flex-col items-center justify-center px-4 text-center">
-        <div className="max-w-lg">
-          <div className="text-yellow-400 text-5xl font-black mb-2 tracking-wider drop-shadow-[0_0_20px_rgba(251,191,36,0.5)]">
-            WHO WANTS TO BE A
+      <div className="stage-bg min-h-screen flex flex-col items-center justify-center px-4 text-center relative overflow-hidden">
+        {/* decorative rings */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(ellipse 60% 60% at 50% 50%, transparent 40%, rgba(200,164,21,0.04) 70%, transparent 100%)",
+          }}
+        />
+        <div
+          className="absolute rounded-full pointer-events-none"
+          style={{
+            width: "520px",
+            height: "520px",
+            border: "1px solid rgba(200,164,21,0.1)",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%,-50%)",
+          }}
+        />
+        <div
+          className="absolute rounded-full pointer-events-none"
+          style={{
+            width: "720px",
+            height: "720px",
+            border: "1px solid rgba(200,164,21,0.06)",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%,-50%)",
+          }}
+        />
+
+        <div className="relative z-10 max-w-xl animate-fade-in">
+          {/* diamond separator */}
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <div className="h-px w-16 bg-gradient-to-r from-transparent to-yellow-500/60" />
+            <div className="w-2 h-2 rotate-45 bg-yellow-400" />
+            <div className="h-px w-16 bg-gradient-to-l from-transparent to-yellow-500/60" />
           </div>
-          <div className="text-yellow-300 text-6xl font-black mb-8 tracking-widest drop-shadow-[0_0_30px_rgba(251,191,36,0.7)]">
-            MILLIONAIRE?
+
+          <h2 className="font-cinzel text-yellow-400 text-xl tracking-[0.3em] uppercase mb-2">
+            Kto chce zostać
+          </h2>
+          <h1
+            className="font-cinzel font-black text-5xl sm:text-6xl text-yellow-300 tracking-widest animate-title-glow uppercase mb-2"
+          >
+            Milionerem?
+          </h1>
+
+          <div className="flex items-center justify-center gap-3 mt-3 mb-8">
+            <div className="h-px w-16 bg-gradient-to-r from-transparent to-yellow-500/60" />
+            <div className="w-2 h-2 rotate-45 bg-yellow-400" />
+            <div className="h-px w-16 bg-gradient-to-l from-transparent to-yellow-500/60" />
           </div>
-          <p className="text-blue-200 mb-8 text-lg">
-            Answer 15 questions to win <span className="text-yellow-300 font-bold">$1,000,000</span>.<br />
-            Use your lifelines wisely. Safe havens at $1,000 &amp; $32,000.
-          </p>
+
+          <div
+            className="rounded-2xl p-5 mb-8 font-rajdhani text-sm text-blue-100 leading-relaxed"
+            style={{
+              background: "rgba(255,255,255,0.03)",
+              border: "1px solid rgba(200,164,21,0.2)",
+            }}
+          >
+            <p className="mb-2">
+              Odpowiedz poprawnie na <span className="text-yellow-300 font-bold">15 pytań</span> i wygraj{" "}
+              <span className="text-yellow-300 font-bold">5 000 000 zł</span>!
+            </p>
+            <p className="text-blue-300 text-xs">
+              Kwoty gwarantowane: <span className="text-yellow-400 font-semibold">10 000 zł</span> i{" "}
+              <span className="text-yellow-400 font-semibold">250 000 zł</span> &nbsp;|&nbsp; 3 koła ratunkowe
+            </p>
+          </div>
+
           <button
             onClick={startGame}
-            className="px-12 py-4 bg-gradient-to-r from-yellow-500 to-yellow-300 text-[#020818] font-black text-2xl rounded-full shadow-lg hover:scale-105 transition-transform"
+            className="font-cinzel font-black text-xl px-14 py-4 rounded-full tracking-widest uppercase transition-all hover:scale-105 active:scale-95 active:translate-y-1"
+            style={{ ...goldBtn, boxShadow: "0 6px 0 #6b5200, 0 0 40px rgba(200,164,21,0.5)" }}
           >
-            PLAY!
+            Graj!
           </button>
         </div>
       </div>
     );
   }
 
+  /* ══════════════ GAME OVER / WON ══════════════ */
   if (phase === "gameover" || phase === "won") {
     const won = phase === "won";
     return (
-      <div className="min-h-screen bg-[#020818] flex flex-col items-center justify-center px-4 text-center">
-        <div className="max-w-md">
-          <div className="text-7xl mb-4">{won ? "🏆" : "💸"}</div>
-          <h1 className={`text-4xl font-black mb-2 ${won ? "text-yellow-300" : "text-red-400"}`}>
-            {won ? "YOU WON!" : "GAME OVER"}
+      <div className="stage-bg min-h-screen flex flex-col items-center justify-center px-4 text-center">
+        <div className="max-w-md animate-scale-in">
+          <div className="text-8xl mb-5">{won ? "🏆" : "💸"}</div>
+
+          <h1
+            className={`font-cinzel font-black text-4xl mb-3 tracking-wider ${won ? "text-yellow-300 animate-title-glow" : "text-red-400"}`}
+          >
+            {won ? "GRATULACJE!" : "KONIEC GRY"}
           </h1>
-          <p className="text-blue-200 text-lg mb-2">
-            {won ? "Congratulations! You are a Millionaire!" : "Better luck next time!"}
+
+          <p className="font-rajdhani text-blue-200 text-lg mb-2">
+            {won
+              ? "Jesteś Milionerem! Niesamowite!"
+              : "Nie tym razem. Nie poddawaj się!"}
           </p>
-          <p className="text-white text-2xl font-bold mb-8">
-            You walk away with{" "}
-            <span className="text-yellow-300">{state.winnings}</span>
-          </p>
+
+          <div
+            className="rounded-2xl p-5 my-6"
+            style={{
+              background: "rgba(255,255,255,0.03)",
+              border: "1px solid rgba(200,164,21,0.3)",
+            }}
+          >
+            <p className="font-rajdhani text-blue-300 text-sm mb-1">Twoja wygrana</p>
+            <p className="font-cinzel font-bold text-3xl text-yellow-300">{state.winnings}</p>
+          </div>
+
           <button
             onClick={startGame}
-            className="px-10 py-3 bg-gradient-to-r from-yellow-500 to-yellow-300 text-[#020818] font-black text-xl rounded-full hover:scale-105 transition-transform"
+            className="font-cinzel font-bold text-lg px-12 py-3 rounded-full tracking-widest uppercase transition-all hover:scale-105 active:scale-95"
+            style={goldBtn}
           >
-            PLAY AGAIN
+            Zagraj ponownie
           </button>
         </div>
       </div>
     );
   }
 
+  /* ══════════════ PLAYING ══════════════ */
   const question = questions[currentIndex];
 
   return (
-    <div className="min-h-screen bg-[#020818] flex items-stretch">
+    <div className="stage-bg min-h-screen flex items-stretch">
       {/* Modals */}
       {lifeline?.type === "audience" && (
         <AudienceModal percentages={lifeline.data.percentages} onClose={dismissLifeline} />
@@ -91,34 +176,47 @@ export default function Home() {
         />
       )}
 
-      {/* Main area */}
-      <div className="flex-1 flex flex-col items-center justify-between py-6 px-4 gap-4">
+      {/* ── Main column ── */}
+      <div className="flex-1 flex flex-col items-center justify-between py-6 px-4 gap-5 min-h-screen">
+
         {/* Header */}
-        <div className="text-center">
-          <h1 className="text-yellow-400 text-xl font-black tracking-widest">WHO WANTS TO BE A MILLIONAIRE?</h1>
-          <p className="text-yellow-200 text-sm mt-1">
-            Question {currentIndex + 1} of 15 — Playing for{" "}
-            <span className="font-bold text-yellow-300">{MONEY_LADDER[currentIndex]}</span>
-          </p>
+        <div className="text-center w-full">
+          <h1 className="font-cinzel font-black text-yellow-400 text-base sm:text-lg tracking-[0.25em] uppercase">
+            Kto chce zostać Milionerem?
+          </h1>
+          <div className="flex items-center justify-center gap-2 mt-1">
+            <div className="h-px w-12 bg-yellow-700/40" />
+            <p className="font-rajdhani text-yellow-200 text-xs tracking-widest">
+              Pytanie {currentIndex + 1} z 15 &nbsp;·&nbsp; Za{" "}
+              <span className="text-yellow-300 font-bold">{MONEY_LADDER[currentIndex]}</span>
+            </p>
+            <div className="h-px w-12 bg-yellow-700/40" />
+          </div>
         </div>
 
         {/* Lifelines */}
-        <Lifelines
-          lifelinesUsed={lifelinesUsed}
-          onUse={useLifeline}
-          disabled={answerState !== "idle"}
-        />
+        <Lifelines lifelinesUsed={lifelinesUsed} onUse={useLifeline} disabled={answerState !== "idle"} />
 
-        {/* Question */}
-        <div className="w-full max-w-xl">
-          <div className="bg-gradient-to-b from-[#0d1a6e] to-[#0a0a2e] border-2 border-[#2a3db0] rounded-2xl p-5 text-center min-h-[100px] flex items-center justify-center">
-            <p className="text-white text-lg font-semibold leading-snug">{question.question}</p>
+        {/* Question + Answers */}
+        <div className="w-full max-w-2xl flex flex-col gap-4">
+          {/* Question box */}
+          <div
+            className="rounded-2xl px-6 py-5 text-center flex items-center justify-center min-h-[110px] question-glow"
+            style={{
+              background: "linear-gradient(160deg, #0d1a6e 0%, #06091e 100%)",
+              border: "2px solid rgba(200,164,21,0.35)",
+            }}
+          >
+            <p className="font-rajdhani text-white text-lg sm:text-xl font-semibold leading-snug tracking-wide">
+              {question.question}
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
+          {/* Answer grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {question.answers.map((answer, i) => (
               <AnswerButton
-                key={i}
+                key={`${currentIndex}-${i}`}
                 index={i}
                 text={answer}
                 isSelected={selectedAnswer === i}
@@ -131,29 +229,35 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Bottom controls */}
-        <div className="flex gap-4 flex-wrap justify-center">
+        {/* Controls */}
+        <div className="flex gap-4 flex-wrap justify-center min-h-[52px] items-center">
           {answerState === "correct" && (
             <button
               onClick={advance}
-              className="px-8 py-3 bg-gradient-to-r from-green-600 to-green-400 text-white font-bold text-lg rounded-full hover:scale-105 transition-transform"
+              className="font-cinzel font-bold px-10 py-3 rounded-full tracking-widest uppercase text-sm transition-all hover:scale-105 active:scale-95 animate-pulse-green"
+              style={{
+                background: "linear-gradient(135deg, #14532d, #22c55e)",
+                color: "#fff",
+                border: "2px solid rgba(134,239,172,0.5)",
+              }}
             >
-              Next Question →
+              Następne pytanie →
             </button>
           )}
           {answerState === "idle" && currentIndex > 0 && (
             <button
               onClick={walkAway}
-              className="px-6 py-2 border border-yellow-600 text-yellow-400 rounded-full text-sm hover:bg-yellow-600/20 transition-colors"
+              className="font-rajdhani font-semibold px-6 py-2.5 rounded-full text-sm tracking-wider transition-all hover:bg-yellow-600/15 active:scale-95"
+              style={{ border: "1px solid rgba(200,164,21,0.4)", color: "#c8a415" }}
             >
-              Walk Away ({MONEY_LADDER[currentIndex - 1]})
+              Rezygnuję z {MONEY_LADDER[currentIndex - 1]}
             </button>
           )}
         </div>
       </div>
 
-      {/* Money ladder sidebar */}
-      <div className="hidden lg:flex items-center p-4 pr-6">
+      {/* ── Money ladder sidebar ── */}
+      <div className="hidden lg:flex items-center px-4 pr-6">
         <MoneyLadder currentIndex={currentIndex} answerState={answerState} />
       </div>
     </div>

@@ -25,7 +25,7 @@ const INITIAL_STATE: GameState = {
   lifelinesUsed: { "fifty-fifty": false, audience: false, phone: false },
   eliminatedAnswers: [],
   lifeline: null,
-  winnings: "$0",
+  winnings: "0 zł",
 };
 
 export function useGame() {
@@ -53,7 +53,7 @@ export function useGame() {
           } else {
             const safeHaven = [...SAFE_HAVENS].reverse().find((h) => h < s.currentIndex);
             const winnings =
-              safeHaven !== undefined ? MONEY_LADDER[safeHaven] : "$0";
+              safeHaven !== undefined ? MONEY_LADDER[safeHaven] : "0 zł";
             return { ...s, answerState: "wrong", winnings };
           }
         });
@@ -81,7 +81,7 @@ export function useGame() {
 
   const walkAway = useCallback(() => {
     setState((s) => {
-      const winnings = s.currentIndex > 0 ? MONEY_LADDER[s.currentIndex - 1] : "$0";
+      const winnings = s.currentIndex > 0 ? MONEY_LADDER[s.currentIndex - 1] : "0 zł";
       return { ...s, phase: "gameover", winnings };
     });
   }, []);
