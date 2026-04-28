@@ -31,10 +31,10 @@ export default function AnswerButton({
           border: "2px solid transparent",
         }}
       >
-        <div className="px-4 py-3 text-gray-600 font-bold text-base bg-[#080820] border-r border-gray-800/50 font-cinzel w-14 text-center shrink-0">
+        <div className="px-5 py-4 text-gray-600 font-bold text-2xl bg-[#080820] border-r border-gray-800/50 font-cinzel w-16 text-center shrink-0">
           {LABELS[index]}:
         </div>
-        <div className="flex-1 px-4 py-3 text-gray-600 line-through font-rajdhani">{text}</div>
+        <div className="flex-1 px-5 py-4 text-gray-600 line-through font-rajdhani text-xl sm:text-2xl">{text}</div>
       </div>
     );
   }
@@ -88,12 +88,12 @@ export default function AnswerButton({
       className={`flex items-center w-full rounded-full overflow-hidden transition-all duration-300 ${borderClass} ${cursor} ${scaleClass} group`}
     >
       <div
-        className={`px-4 py-3 font-bold text-base ${labelBg} ${labelColor} border-r border-white/10 font-cinzel w-14 text-center shrink-0 transition-colors duration-300`}
+        className={`px-5 py-4 font-bold text-2xl ${labelBg} ${labelColor} border-r border-white/10 font-cinzel w-16 text-center shrink-0 transition-colors duration-300`}
       >
         {LABELS[index]}:
       </div>
       <div
-        className={`flex-1 px-4 py-3 text-left font-rajdhani text-base font-semibold ${textColor} tracking-wide transition-colors duration-300`}
+        className={`flex-1 px-5 py-4 text-left font-rajdhani text-xl sm:text-2xl font-semibold ${textColor} tracking-wide transition-colors duration-300`}
       >
         {text}
       </div>
