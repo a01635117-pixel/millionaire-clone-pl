@@ -201,13 +201,13 @@ export default function Home() {
         <div className="w-full max-w-2xl flex flex-col gap-4">
           {/* Question box */}
           <div
-            className="rounded-2xl px-6 py-5 text-center flex items-center justify-center min-h-[110px] question-glow"
+            className="rounded-2xl px-6 py-5 text-center flex items-center justify-center min-h-[140px] question-glow"
             style={{
               background: "linear-gradient(160deg, #0d1a6e 0%, #06091e 100%)",
               border: "2px solid rgba(200,164,21,0.35)",
             }}
           >
-            <p className="font-rajdhani text-white text-lg sm:text-xl font-semibold leading-snug tracking-wide">
+            <p className="font-rajdhani text-white text-2xl sm:text-3xl font-semibold leading-snug tracking-wide">
               {question.question}
             </p>
           </div>
