@@ -28,6 +28,46 @@ export default function Home() {
     }
   }, [answerState, endGame]);
 
+  // Suspense ambient pulses while playing
+  useEffect(() => {
+    if (phase !== "playing") return;
+    const W = window as unknown as { AudioContext?: typeof AudioContext; webkitAudioContext?: typeof AudioContext };
+    const AC = W.AudioContext || W.webkitAudioContext;
+    if (!AC) return;
+    const ctx = new AC();
+    let stopped = false;
+    const note = (freq: number, when: number, dur: number, gain = 0.07) => {
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = "sine";
+      o.frequency.value = freq;
+      o.connect(g).connect(ctx.destination);
+      const t = ctx.currentTime + when;
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(gain, t + 0.05);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      o.start(t);
+      o.stop(t + dur + 0.05);
+    };
+    let bar = 0;
+    const tick = () => {
+      if (stopped) return;
+      note(82.4, 0, 0.45);
+      note(82.4, 0.55, 0.45);
+      note(110, 1.1, 0.45);
+      if (bar % 2 === 1) note(220, 1.5, 0.7, 0.045);
+      bar++;
+    };
+    tick();
+    const id = window.setInterval(tick, 2000);
+    return () => {
+      stopped = true;
+      window.clearInterval(id);
+      ctx.close().catch(() => {});
+    };
+  }, [phase]);
+
+
   /* ══════════════ INTRO ══════════════ */
   if (phase === "intro") {
     return (
