@@ -29,14 +29,13 @@ export default function Home() {
                   audioRef.current = new Audio("/milionerzy_pytania.mp3");
                   audioRef.current.loop = true;
           }
-          if (phase === "playing") {
-                  audioRef.current.play().catch(() => {});
-          } else {
+        if (phase === "playing" && answerState === "idle") {
+                      audioRef.current.play().catch(() => {});
+        } else {
                   audioRef.current.pause();
-                  audioRef.current.currentTime = 0;
-          }
-    }, [phase]);
-  
+            if (phase !== "playing") audioRef.current.currentTime = 0;
+        }
+    }, [phase, answerState]);
   useEffect(() => {
     if (answerState === "wrong") {
       const t = setTimeout(() => endGame(), 2000);
