@@ -9,7 +9,7 @@ export interface Question {
 export const ALL_QUESTIONS: Question[] = [
     // ŁATWE
   { id: 1, question: "Kto jest autorem „Kamieni na Szaniec\"?", answers: ["Antoine de Saint-Exupéry", "Stefan Żeromski", "Aleksander Kamiński", "Charles Dickens"], correct: 2, difficulty: "easy" },
-  { id: 2, question: "Jak nazywa się główny bohater „Opowieści Wigilijnej\"?", answers: ["Scrooge Ebenezer", "Zośka", "Mały Książę", "Marley"], correct: 0, difficulty: "easy" },
+  { id: 2, question: "Jak nazywa się główny bohater„Opowieści Wigilijnej\"?", answers: ["Scrooge Ebenezer", "Zośka", "Mały Książę", "Marley"], correct: 0, difficulty: "easy" },
   { id: 3, question: "O co się pokłóciła Balladyna z Aliną?", answers: ["O Kirkora", "O maliny", "O majątek", "O kwiaty"], correct: 0, difficulty: "easy" },
   { id: 4, question: "Kim był Skawiński?", answers: ["Żołnierzem", "Latarnikiem", "Nauczycielem", "Lekarzem"], correct: 1, difficulty: "easy" },
   { id: 5, question: "Na jakiej planecie mieszkał Mały Książę?", answers: ["Asteroidzie B-612", "Ziemi", "Księżycu", "Marsie"], correct: 0, difficulty: "easy" },
@@ -61,7 +61,7 @@ export const ALL_QUESTIONS: Question[] = [
   { id: 47, question: "Który gatunek literacki łączy elementy epiki, liryki i dramatu?", answers: ["tragedia", "powieść", "ballada", "fraszka"], correct: 2, difficulty: "hard" },
   { id: 48, question: "Który wyraz jest partykułą?", answers: ["dom", "szybko", "niech", "piękny"], correct: 2, difficulty: "hard" },
   { id: 49, question: "Które z podanych wyrazów jest archaizmem?", answers: ["komputer", "rower", "waćpan", "telefon"], correct: 2, difficulty: "hard" },
-  { id: 50, question: "Ożywienie rzeczy martwych to:", answers: ["metafora", "personifikacja", "epitet", "rym"], correct: 1, difficulty: "hard" },
+  { id: 50, question: "Ożywienie rzeczy martwych to:", answers: ["metafora", "animizacja", "epitet", "rym"], correct: 1, difficulty: "hard" },
   { id: 51, question: "Archaizm to:", answers: ["stary, przestarzały wyraz", "błąd językowy", "nowe słowo", "skrót"], correct: 0, difficulty: "hard" },
   { id: 52, question: "Wyrazy o przeciwnym znaczeniu to:", answers: ["synonimy", "homonimy", "antonimy", "anagramy"], correct: 2, difficulty: "hard" },
   { id: 53, question: "Alegoria to:", answers: ["dosłowność", "ukryte znaczenie", "rym", "zdanie"], correct: 1, difficulty: "hard" },
