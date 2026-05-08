@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useGame } from "./hooks/useGame";
 import MoneyLadder from "./components/MoneyLadder";
 import AnswerButton from "./components/AnswerButton";
@@ -20,7 +20,23 @@ export default function Home() {
   const { state, startGame, selectAnswer, advance, walkAway, endGame, useLifeline, dismissLifeline } = useGame();
   const { phase, questions, currentIndex, selectedAnswer, answerState, lifelinesUsed, eliminatedAnswers, lifeline } =
     state;
+  // Audio playback
+    const audioRef = useRef<HTMLAudioElement | null>(null);
 
+    useEffect(() => {
+          if (typeof window === "undefined") return;
+          if (!audioRef.current) {
+                  audioRef.current = new Audio("/milionerzy_pytania.mp3");
+                  audioRef.current.loop = true;
+          }
+          if (phase === "playing") {
+                  audioRef.current.play().catch(() => {});
+          } else {
+                  audioRef.current.pause();
+                  audioRef.current.currentTime = 0;
+          }
+    }, [phase]);
+  
   useEffect(() => {
     if (answerState === "wrong") {
       const t = setTimeout(() => endGame(), 2000);
